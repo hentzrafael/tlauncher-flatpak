@@ -1,0 +1,40 @@
+app-id: com.local.TLauncher
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: tlauncher
+
+finish-args:
+  - --share=network
+  - --socket=x11
+  - --socket=wayland
+  - --device=dri
+  - --filesystem=home
+
+modules:
+  - name: java8
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/jre
+      - tar -xf jre8.tar.gz --strip-components=1 -C /app/jre
+    sources:
+      - type: file
+        path: jre8.tar.gz
+
+  - name: tlauncher
+    buildsystem: simple
+    build-commands:
+      - install -D tlauncher.jar /app/lib/tlauncher.jar
+      - install -D tlauncher.sh /app/bin/tlauncher
+      - install -D com.local.TLauncher.desktop /app/share/applications/com.local.TLauncher.desktop
+      - install -D icon.png /app/share/icons/hicolor/256x256/apps/com.local.TLauncher.png
+    sources:
+      - type: file
+        path: tlauncher.jar
+      - type: file
+        path: tlauncher.sh
+      - type: file
+        path: com.local.TLauncher.desktop
+      - type: file
+        path: icon.png
+
